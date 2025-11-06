@@ -1,0 +1,256 @@
+.section {
+  background: linear-gradient(135deg, var(--color-base) 0%, #002a4a 100%);
+  padding: 100px 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: rgba(250, 250, 250, 0.7);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.tipsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.tipCard {
+  background: var(--color-secondary);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(250, 250, 250, 0.1);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tipCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--color-success);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.tipCard:hover::before {
+  transform: scaleX(1);
+}
+
+.tipCard.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tipCard:hover {
+  transform: translateY(-5px);
+  border-color: rgba(81, 255, 188, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.tipHeader {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.tipIcon {
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: rgba(81, 255, 188, 0.1);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.tipTitleSection {
+  flex: 1;
+}
+
+.tipTitle {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.tipDescription {
+  color: rgba(250, 250, 250, 0.8);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.detailsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.detailItem {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: rgba(250, 250, 250, 0.7);
+  line-height: 1.5;
+}
+
+.detailItem::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--color-success);
+  font-weight: bold;
+}
+
+.detailItem:last-child {
+  margin-bottom: 0;
+}
+
+.actionSection {
+  display: flex;
+  justify-content: center;
+}
+
+.actionCard {
+  background: rgba(81, 255, 188, 0.05);
+  border: 1px solid rgba(81, 255, 188, 0.2);
+  border-radius: 20px;
+  padding: 3rem;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+}
+
+.actionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.actionIcon {
+  font-size: 2.5rem;
+}
+
+.actionTitle {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--color-success);
+  margin: 0;
+}
+
+.actionDescription {
+  color: rgba(250, 250, 250, 0.8);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.actionButton {
+  background: var(--color-success);
+  color: var(--color-base);
+  border: none;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.actionButton:hover {
+  background: #45e6a8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(81, 255, 188, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section {
+    padding: 80px 0;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .tipsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .tipCard {
+    padding: 1.5rem;
+  }
+  
+  .tipTitle {
+    font-size: 1.2rem;
+  }
+  
+  .actionCard {
+    padding: 2rem;
+  }
+  
+  .actionTitle {
+    font-size: 1.5rem;
+  }
+  
+  .actionHeader {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tipCard {
+    padding: 1.2rem;
+  }
+  
+  .tipHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .actionCard {
+    padding: 1.5rem;
+  }
+  
+  .actionDescription {
+    font-size: 1rem;
+  }
+}
