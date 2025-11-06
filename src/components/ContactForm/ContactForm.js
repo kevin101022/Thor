@@ -27,33 +27,23 @@ const ContactForm = () => {
     setSubmitStatus(null);
     setErrorMessage('');
 
-    try {
-      // Integración con Formspree usando FormData para archivos
-      const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('suspiciousLink', formData.suspiciousLink || '');
-      formDataToSend.append('message', formData.message);
-      formDataToSend.append('_subject', 'Nuevo reporte de estafa - Thor Anti-Scam');
-      formDataToSend.append('_replyto', formData.email);
-      
-      if (formData.captureFile) {
-        formDataToSend.append('captureFile', formData.captureFile);
-      }
+    // Método más simple y confiable para Formspree
+    const form = e.target;
+    const formData = new FormData(form);
 
-      // Integración con Formspree
+    try {
       const response = await fetch('https://formspree.io/f/mldoqzpl', {
         method: 'POST',
-        body: formDataToSend,
+        body: formData,
         headers: {
           'Accept': 'application/json'
         }
       });
 
-      const result = await response.json();
-
       if (response.ok) {
         setSubmitStatus('success');
+        // Limpiar formulario
+        form.reset();
         setFormData({
           name: '',
           email: '',
@@ -61,20 +51,19 @@ const ContactForm = () => {
           captureFile: null,
           message: ''
         });
-        // Limpiar el input de archivo
-        const fileInput = document.getElementById('captureFile');
-        if (fileInput) fileInput.value = '';
       } else {
-        console.error('Error de Formspree:', result);
-        setErrorMessage(result.error || 'Error desconocido del servidor');
-        throw new Error(result.error || 'Error en el envío');
+        const data = await response.json();
+        if (data.errors) {
+          setErrorMessage(data.errors.map(error => error.message).join(', '));
+        } else {
+          setErrorMessage('Error al enviar el formulario');
+        }
+        setSubmitStatus('error');
       }
     } catch (error) {
-      console.error('Error al enviar formulario:', error);
+      console.error('Error:', error);
+      setErrorMessage('Error de conexión. Verifica tu internet e intenta nuevamente.');
       setSubmitStatus('error');
-      if (!errorMessage) {
-        setErrorMessage('Error de conexión. Verifica tu internet.');
-      }
     } finally {
       setIsSubmitting(false);
     }
@@ -93,7 +82,11 @@ const ContactForm = () => {
         </div>
 
         <div className={styles.formContainer}>
-          <form className={styles.form} onSubmit={handleSubmit}>
+          <form className={styles.form} onSubmit={handleSubmit} action="https://formspree.io/f/mldoqzpl" method="POST">
+            {/* Campos hidden para Formspree */}
+            <input type="hidden" name="_subject" value="Nuevo reporte de estafa - Thor Anti-Scam" />
+            <input type="hidden" name="_next" value={window.location.href} />
+            
             <div className={styles.formGrid}>
               <div className={styles.inputGroup}>
                 <label htmlFor="name" className={styles.label}>
