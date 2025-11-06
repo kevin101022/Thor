@@ -11,6 +11,7 @@ const ContactForm = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -24,15 +25,17 @@ const ContactForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
+    setErrorMessage('');
 
     try {
       // Integración con Formspree usando FormData para archivos
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
-      formDataToSend.append('suspiciousLink', formData.suspiciousLink);
+      formDataToSend.append('suspiciousLink', formData.suspiciousLink || '');
       formDataToSend.append('message', formData.message);
       formDataToSend.append('_subject', 'Nuevo reporte de estafa - Thor Anti-Scam');
+      formDataToSend.append('_replyto', formData.email);
       
       if (formData.captureFile) {
         formDataToSend.append('captureFile', formData.captureFile);
@@ -42,7 +45,12 @@ const ContactForm = () => {
       const response = await fetch('https://formspree.io/f/mldoqzpl', {
         method: 'POST',
         body: formDataToSend,
+        headers: {
+          'Accept': 'application/json'
+        }
       });
+
+      const result = await response.json();
 
       if (response.ok) {
         setSubmitStatus('success');
@@ -57,10 +65,16 @@ const ContactForm = () => {
         const fileInput = document.getElementById('captureFile');
         if (fileInput) fileInput.value = '';
       } else {
-        throw new Error('Error en el envío');
+        console.error('Error de Formspree:', result);
+        setErrorMessage(result.error || 'Error desconocido del servidor');
+        throw new Error(result.error || 'Error en el envío');
       }
     } catch (error) {
+      console.error('Error al enviar formulario:', error);
       setSubmitStatus('error');
+      if (!errorMessage) {
+        setErrorMessage('Error de conexión. Verifica tu internet.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -184,7 +198,7 @@ const ContactForm = () => {
               {submitStatus === 'error' && (
                 <div className={styles.errorMessage}>
                   <span className={styles.errorIcon}>❌</span>
-                  Error al enviar el reporte. Por favor intenta nuevamente.
+                  {errorMessage || 'Error al enviar el reporte. Verifica tu conexión a internet e intenta nuevamente.'}
                 </div>
               )}
             </div>
