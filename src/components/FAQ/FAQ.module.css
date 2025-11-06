@@ -1,0 +1,263 @@
+.section {
+  background-color: var(--color-secondary);
+  padding: 100px 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: rgba(250, 250, 250, 0.7);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.faqContainer {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+}
+
+.faqItem {
+  background: var(--color-base);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(250, 250, 250, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faqItem:hover {
+  border-color: rgba(81, 255, 188, 0.3);
+}
+
+.question {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 1.5rem 2rem;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.question:hover {
+  background: rgba(81, 255, 188, 0.05);
+}
+
+.question.active {
+  background: rgba(81, 255, 188, 0.1);
+  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+}
+
+.questionText {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text);
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: var(--color-success);
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(81, 255, 188, 0.1);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.question.active .icon {
+  background: var(--color-success);
+  color: var(--color-base);
+  transform: rotate(180deg);
+}
+
+.answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.answer.open {
+  max-height: 500px;
+}
+
+.answerContent {
+  padding: 0 2rem 2rem;
+}
+
+.answerLine {
+  color: rgba(250, 250, 250, 0.8);
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.answerLine:last-child {
+  margin-bottom: 0;
+}
+
+.answerLine strong {
+  color: var(--color-success);
+}
+
+.answerLine a {
+  color: var(--color-success);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.answerLine a:hover {
+  color: #45e6a8;
+  text-decoration: underline;
+}
+
+.answerLine a:focus {
+  outline: 2px solid var(--color-success);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+.emergencyContact {
+  background: linear-gradient(135deg, rgba(255, 87, 87, 0.1) 0%, rgba(255, 87, 87, 0.05) 100%);
+  border: 1px solid rgba(255, 87, 87, 0.3);
+  border-radius: 16px;
+  padding: 2.5rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.emergencyHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.emergencyIcon {
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+.emergencyTitle {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-alert);
+  margin: 0;
+}
+
+.emergencyText {
+  color: var(--color-text);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.emergencyText strong {
+  color: var(--color-alert);
+  font-weight: 700;
+}
+
+.emergencyText a {
+  color: var(--color-alert);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.emergencyText a:hover {
+  color: #ff7575;
+  text-decoration: underline;
+}
+
+.emergencyText a:focus {
+  outline: 2px solid var(--color-alert);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section {
+    padding: 80px 0;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .question {
+    padding: 1.2rem 1.5rem;
+  }
+  
+  .questionText {
+    font-size: 1.1rem;
+  }
+  
+  .answerContent {
+    padding: 0 1.5rem 1.5rem;
+  }
+  
+  .emergencyContact {
+    padding: 2rem;
+  }
+  
+  .emergencyHeader {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .emergencyIcon {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .question {
+    padding: 1rem;
+  }
+  
+  .questionText {
+    font-size: 1rem;
+  }
+  
+  .answerContent {
+    padding: 0 1rem 1rem;
+  }
+  
+  .emergencyContact {
+    padding: 1.5rem;
+  }
+  
+  .emergencyText {
+    font-size: 1rem;
+  }
+}
