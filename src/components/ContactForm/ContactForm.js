@@ -38,8 +38,8 @@ const ContactForm = () => {
         formDataToSend.append('captureFile', formData.captureFile);
       }
 
-      // Reemplazar 'YOUR_FORM_ID' con el ID real de Formspree
-      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      // Integración con Formspree
+      const response = await fetch('https://formspree.io/f/mldoqzpl', {
         method: 'POST',
         body: formDataToSend,
       });
