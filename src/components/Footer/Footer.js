@@ -29,7 +29,7 @@ const Footer = () => {
                 Desarrollado como proyecto del bootcamp de IA-Talento Tech 2025
               </p>
               <p className={styles.students}>
-                Creado por: Kevin Rivera
+                Creado por: Kevin Andres Rivera Suarez
               </p>
             </div>
 
