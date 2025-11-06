@@ -2,74 +2,29 @@ import React, { useState } from 'react';
 import styles from './ContactForm.module.css';
 
 const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    suspiciousLink: '',
-    captureFile: null,
-    message: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'file' ? files[0] : value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus(null);
-    setErrorMessage('');
-
-    // Método más simple y confiable para Formspree
-    const form = e.target;
-    const formData = new FormData(form);
-
-    try {
-      const response = await fetch('https://formspree.io/f/mldoqzpl', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        setSubmitStatus('success');
-        // Limpiar formulario
-        form.reset();
-        setFormData({
-          name: '',
-          email: '',
-          suspiciousLink: '',
-          captureFile: null,
-          message: ''
-        });
-      } else {
-        const data = await response.json();
-        if (data.errors) {
-          setErrorMessage(data.errors.map(error => error.message).join(', '));
-        } else {
-          setErrorMessage('Error al enviar el formulario');
-        }
-        setSubmitStatus('error');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setErrorMessage('Error de conexión. Verifica tu internet e intenta nuevamente.');
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const isFormValid = formData.name && formData.email && formData.message;
+  if (isSubmitted) {
+    return (
+      <section id="contact" className={styles.section}>
+        <div className="container">
+          <div className={styles.successContainer}>
+            <div className={styles.successMessage}>
+              <span className={styles.successIcon}>✅</span>
+              <h2>¡Reporte enviado exitosamente!</h2>
+              <p>Gracias por ayudar a proteger a otros de las estafas digitales.</p>
+              <button 
+                onClick={() => setIsSubmitted(false)}
+                className={styles.backButton}
+              >
+                Enviar otro reporte
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="contact" className={styles.section}>
@@ -82,10 +37,13 @@ const ContactForm = () => {
         </div>
 
         <div className={styles.formContainer}>
-          <form className={styles.form} onSubmit={handleSubmit} action="https://formspree.io/f/mldoqzpl" method="POST">
-            {/* Campos hidden para Formspree */}
+          <form 
+            className={styles.form} 
+            action="https://formspree.io/f/mldoqzpl" 
+            method="POST"
+            onSubmit={() => setTimeout(() => setIsSubmitted(true), 1000)}
+          >
             <input type="hidden" name="_subject" value="Nuevo reporte de estafa - Thor Anti-Scam" />
-            <input type="hidden" name="_next" value={window.location.href} />
             
             <div className={styles.formGrid}>
               <div className={styles.inputGroup}>
@@ -96,8 +54,6 @@ const ContactForm = () => {
                   type="text"
                   id="name"
                   name="name"
-                  value={formData.name}
-                  onChange={handleChange}
                   className={styles.input}
                   required
                   placeholder="Tu nombre completo"
@@ -112,8 +68,6 @@ const ContactForm = () => {
                   type="email"
                   id="email"
                   name="email"
-                  value={formData.email}
-                  onChange={handleChange}
                   className={styles.input}
                   required
                   placeholder="tu@email.com"
@@ -129,30 +83,11 @@ const ContactForm = () => {
                 type="url"
                 id="suspiciousLink"
                 name="suspiciousLink"
-                value={formData.suspiciousLink}
-                onChange={handleChange}
                 className={styles.input}
                 placeholder="https://sitio-sospechoso.com"
               />
               <small className={styles.inputHelp}>
                 Pega aquí el enlace que consideras sospechoso para que lo analicemos
-              </small>
-            </div>
-
-            <div className={styles.inputGroup}>
-              <label htmlFor="captureFile" className={styles.label}>
-                Captura de pantalla de la estafa (opcional)
-              </label>
-              <input
-                type="file"
-                id="captureFile"
-                name="captureFile"
-                onChange={handleChange}
-                className={styles.fileInput}
-                accept="image/*,.pdf"
-              />
-              <small className={styles.inputHelp}>
-                Sube una imagen o PDF con evidencia de la estafa (máx. 10MB)
               </small>
             </div>
 
@@ -163,8 +98,6 @@ const ContactForm = () => {
               <textarea
                 id="message"
                 name="message"
-                value={formData.message}
-                onChange={handleChange}
                 className={styles.textarea}
                 required
                 rows={6}
@@ -176,24 +109,9 @@ const ContactForm = () => {
               <button
                 type="submit"
                 className={styles.submitButton}
-                disabled={!isFormValid || isSubmitting}
               >
-                {isSubmitting ? 'Enviando reporte...' : 'Enviar reporte'}
+                Enviar reporte
               </button>
-
-              {submitStatus === 'success' && (
-                <div className={styles.successMessage}>
-                  <span className={styles.successIcon}>✅</span>
-                  Reporte enviado exitosamente. Gracias por ayudar a proteger a otros.
-                </div>
-              )}
-
-              {submitStatus === 'error' && (
-                <div className={styles.errorMessage}>
-                  <span className={styles.errorIcon}>❌</span>
-                  {errorMessage || 'Error al enviar el reporte. Verifica tu conexión a internet e intenta nuevamente.'}
-                </div>
-              )}
             </div>
           </form>
 
